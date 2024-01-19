@@ -1,34 +1,100 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
-    <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>SIMON DICE</title>
-    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Juego de Memoria</title>
     <style>
-        .contenedor { max-width: 60%; margin: 0 auto; padding-top: 30px }
-        .botones { display: flex }
-        .botones button { flex: 1; padding: 60px; border: 0; outline: none,; margin: 10px; }
-        button.principal { padding: 10px; background-color: aliceblue; border: 1px solid #ddd; margin-left: 10px; display: block; width: 120% }
-        #verde { background-color: green }
-        #azul { background-color: blue }
-        #rojo { background-color: red }
-        #amarillo { background-color: yellow }
-        #negro { background-color: black}
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f5f5f5;
+        }
+
+        #game-container {
+            display: flex;
+            gap: 10px;
+        }
+
+        .color-button {
+            position: relative;
+            width: 100px;
+            height: 100px;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .color-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.7);
+            display: none;
+        }
+
+        #start-button {
+            margin-top: 20px;
+            padding: 10px;
+            cursor: pointer;
+        }
     </style>
 </head>
-
 <body>
-    <div class="contenedor">
-        <div class="botones">
-            <button id="verde"></button>
-            <button id="amarillo"></button>
-            <button id="azul"></button>
-            <button id="rojo"></button>
-            <button id="negro"></button>
-        </div>
-        <button id="btnEmpezar" class="principal" onclick="iniciarJuego()">Empezar</button>
+    <div id="game-container">
+        <button class="color-button" style="background-color: red;" onclick="elegirColor(0)">
+            <div class="color-overlay"></div>
+        </button>
+        <button class="color-button" style="background-color: green;" onclick="elegirColor(1)">
+            <div class="color-overlay"></div>
+        </button>
+        <button class="color-button" style="background-color: blue;" onclick="elegirColor(2)">
+            <div class="color-overlay"></div>
+        </button>
+        <button class="color-button" style="background-color: yellow;" onclick="elegirColor(3)">
+            <div class="color-overlay"></div>
+        </button>
     </div>
+    <button id="start-button" onclick="iniciarJuego()">Iniciar Juego</button>
+
+    <script>
+        let nivel = 1;
+        let secuenciaMaquina = [];
+        let secuenciaUsuario = [];
+        let turnoMaquina = true;
+
+        function iniciarJuego() {
+            secuenciaMaquina = [];
+            secuenciaUsuario = [];
+            nivel = 1;
+            turnoMaquina = true;
+
+            console.log('Juego iniciado');
+            setTimeout(() => {
+                mostrarSecuencia();
+            }, 1000);
+        }
+
+        function mostrarSecuencia() {
+            const nuevoColor = generarColorAleatorio();
+            secuenciaMaquina.push(nuevoColor);
+
+            for (let i = 0; i < secuenciaMaquina.length; i++) {
+                setTimeout(() => {
+                    iluminarBoton(secuenciaMaquina[i]);
+                }, i * 1000);
+            }
+
+            setTimeout(() => {
+                turnoMaquina = false;
+                habilitarBotonInicio();
+            }, secuenciaMaquina.length * 1000);
+        }
+    </script>
 </body>
 </html>
